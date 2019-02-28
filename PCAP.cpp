@@ -8,21 +8,21 @@
 #include <esp_err.h>
 #include <esp_log.h>
 
-void write32(uint32_t num)
+void write32(uint32_t num, File file)
 {
     uint8_t buf[4];
     buf[0]=num;
     buf[1]=num>>8;
     buf[2]=num>>16;
     buf[3]=num>>24;
-    write(buf,4);
+    file.write(buf,4);
 }
-void write16(uint16_t num)
+void write16(uint16_t num, File file)
 {
     uint8_t buf[2];
     buf[0]=num;
     buf[1]=num>>8;
-    write(buf,2);
+    file.write(buf,2);
 }
 File openPCAP(char * file)
 {
@@ -41,5 +41,5 @@ File openPCAP(char * file)
 }
 bool closePCAP(File file)
 {
-    
+    file.close();
 }
