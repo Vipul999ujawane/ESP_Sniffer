@@ -42,4 +42,5 @@ File openPCAP(char * file)
 bool closePCAP(File file)
 {
     file.close();
+    return true;
 }
