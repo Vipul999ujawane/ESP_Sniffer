@@ -10,7 +10,7 @@ Developed using the Arduino Framework for ESP8266.
 
   
 
-*  [ ] Sniffing Packets
+*  [X] Sniffing Packets
 *  [x] Saving Files to PCAP Format on SD Card
 *  [ ] Transfer of Files serially to Wireshark
 *  [ ] Deauth Packet Attack (for 802.11)
