@@ -9,8 +9,8 @@
 #define PCAP_MAGIC_BIG_ENDIAN 0xA1B2C3D4    /*!< Big-Endian */
 #define PCAP_MAGIC_LITTLE_ENDIAN 0xD4C3B2A1 /*!< Little-Endian */
 #define PCAP_TIME_ZONE_GMT 0x00 /*!< Time Zone */
-#define PCAP_SIGFLAG 0x00
-#define PCAP_MAX_LENGTH sizeof(int)
+#define PCAP_SIGFLAG 0x05
+#define PCAP_MAX_LENGTH 4294967295
 const uint16_t PCAP_LINK_TYPE_802_11 = 105;
 
 const int chip_select = D8;
@@ -54,16 +54,16 @@ void newPacket(uint32_t sec, uint32_t micsec, uint32_t len, uint8_t * buf, File 
     file.write(buf,len);
 }
 
-File openPCAP(char * file)
+File openPCAP(String file)
 {
   if(SD.exists(file))
   {
     SD.remove(file);
-    Serial.println("[*]Previous File Removed") ;
+    Serial.println("[*] Previous File Removed") ;
     }
     File pcap = SD.open(file, FILE_WRITE);
     if(pcap){
-        Serial.println("[S] File Opened Successfully");
+        Serial.println("[*] File Opened Successfully");
         write32((uint32_t)PCAP_MAGIC_BIG_ENDIAN,pcap);
         write16((uint16_t)PCAP_VERSION_MAJOR,pcap);
         write16((uint16_t)PCAP_VERSION_MINOR,pcap);
@@ -91,15 +91,16 @@ void setup() {
   }
   Serial.println("Initializing Complete.");
   Serial.println("[*] Sniffer Started");
-  PCAP_File = openPCAP("pcap");
 }
 int i = 1;
 void loop() {
-  if(i){
-  delay(10000);
-  closePCAP(PCAP_File);
-  Serial.println("[*] Sniffer Closed");
-  i--;
+  String file_name = "pcap_"+String(i);
+  Serial.println("[*] Starting capture in "+file_name);
+  PCAP_File = openPCAP(file_name);
+  if(PCAP_File){
+    delay(30000);
+    Serial.println("[*] Closed File");
+    closePCAP(PCAP_File);
+    i++;
   }
-  exit(0);
 }
