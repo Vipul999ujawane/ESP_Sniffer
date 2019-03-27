@@ -59,14 +59,16 @@ void startSerial()
 
 void setup() {
   Serial.begin(9600);
-  
+  delay(10000);
+  Serial.println();
+  Serial.println("<<<START>>>");
+  startSerial();  
   wifi_set_opmode(STATION_MODE);
   wifi_promiscuous_enable(0);
   wifi_set_promiscuous_rx_cb(sniffer);
   wifi_set_channel(1);
   wifi_promiscuous_enable(1);
-  delay(10000);
-  Serial.println("<<<START>>>")
+
 }
 
 void loop() {
